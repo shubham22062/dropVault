@@ -4,40 +4,46 @@ import ProgressBar from "./ProgressBar";
 
 interface FileItemProps {
   item: UploadItem;
+  onRetry: (id: string) => void;
+  onCancel: (id: string) => void;
 }
 
-function FileItem({ item }: FileItemProps) {
+function FileItem({ item, onRetry, onCancel }: FileItemProps) {
   return (
-    <div
-      style={{
-        background: "white",
-        padding: "20px",
-        marginBottom: "15px",
-        borderRadius: "10px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
+    <div className="file-item">
+      <div className="file-header">
+        <div className="file-meta">
           <strong>{item.name}</strong>
-
-          <p>{formatFileSize(item.size)}</p>
+          <span>{formatFileSize(item.size)}</span>
         </div>
 
-        <div>
-          <strong>{item.status}</strong>
+        <div className="file-state-wrap">
+          <span className={`status-badge status-${item.status}`}>{item.status}</span>
         </div>
+      </div>
+
+      <div className="progress-meta">
+        <span>{item.uploadedChunks}/{item.totalChunks || 1} chunks</span>
+        <span>{item.progress}%</span>
       </div>
 
       <ProgressBar progress={item.progress} />
 
-      <p style={{ marginTop: "8px" }}>
-        {item.progress}%
-      </p>
+      <div className="file-actions">
+        {item.status === "failed" && (
+          <button type="button" className="secondary-btn" onClick={() => onRetry(item.id)}>
+            Retry
+          </button>
+        )}
+
+        {(item.status === "pending" || item.status === "uploading") && (
+          <button type="button" className="ghost-btn" onClick={() => onCancel(item.id)}>
+            Cancel
+          </button>
+        )}
+
+        {item.error && item.status !== "failed" && <small>{item.error}</small>}
+      </div>
     </div>
   );
 }

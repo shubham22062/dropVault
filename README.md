@@ -1,75 +1,71 @@
-# React + TypeScript + Vite
+# DropVault
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DropVault is a sleek file upload dashboard built with React, TypeScript, and Vite. It lets you drag and drop files, monitor progress, retry failed uploads, and cancel active transfers in a polished interface.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Drag-and-drop upload area
+- Multi-file queue support
+- Progress tracking per file
+- Concurrency limit for uploads
+- Retry failed transfers
+- Cancel active or pending uploads
+- Responsive, modern UI
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Install dependencies:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+   ```bash
+   npm install
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+2. Start the development server:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+   ```bash
+   npm run dev
+   ```
 
+3. Build for production:
+
+   ```bash
+   npm run build
+   ```
+
+## Project structure
+
+```text
+src/
+  App.tsx
+  components/
+    DropZone.tsx
+    FileItem.tsx
+    FileList.tsx
+    ProgressBar.tsx
+  hooks/
+    useUploadQueue.ts
+  services/
+    chunkService.ts
+    uploadService.ts
+  types/
+    upload.ts
+  utils/
+    fileUtils.ts
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Notes
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This app simulates chunked uploads with a lightweight in-browser queue and animated progress indicators. It is ideal for UI prototyping or learning how upload state management works in React.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Scripts
 
-```
+- `npm run dev` — run the app locally
+- `npm run build` — type-check and produce a production build
+- `npm run lint` — lint the codebase

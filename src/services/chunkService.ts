@@ -1,15 +1,20 @@
+const CHUNK_SIZE = 1024 * 1024;
 
-const CHUNK_SIZE = 1024 * 1024; // 1 MB
-
-export function getTotalChunks(file: File): number {
-  return Math.ceil(file.size / CHUNK_SIZE);
+export function getTotalChunks(
+  file: File
+): number {
+  return Math.ceil(
+    file.size / CHUNK_SIZE
+  );
 }
 
 export function getChunkSize(
   file: File,
   chunkIndex: number
 ): number {
-  const start = chunkIndex * CHUNK_SIZE;
+  const start =
+    chunkIndex * CHUNK_SIZE;
+
   const end = Math.min(
     start + CHUNK_SIZE,
     file.size
@@ -18,22 +23,53 @@ export function getChunkSize(
   return end - start;
 }
 
-export function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+export function delay(
+  ms: number,
+  signal?: AbortSignal
+): Promise<void> {
+  return new Promise(
+    (resolve, reject) => {
+      const timer = setTimeout(
+        resolve,
+        ms
+      );
+
+      signal?.addEventListener(
+        "abort",
+        () => {
+          clearTimeout(timer);
+
+          reject(
+            new Error("Upload cancelled")
+          );
+        },
+        { once: true }
+      );
+    }
+  );
 }
 
 export async function uploadChunk(
   file: File,
-  chunkIndex: number
+  chunkIndex: number,
+  signal?: AbortSignal
 ): Promise<void> {
-  const size = getChunkSize(file, chunkIndex);
+  if (signal?.aborted) {
+    throw new Error(
+      "Upload cancelled"
+    );
+  }
 
-  console.log(
-    `Uploading chunk ${chunkIndex + 1} (${size} bytes)`
+  const size = getChunkSize(
+    file,
+    chunkIndex
   );
 
-  // Simulate network request
-  await delay(300);
+  console.log(
+    `Uploading chunk ${
+      chunkIndex + 1
+    } (${size} bytes)`
+  );
+
+  await delay(500, signal);
 }

@@ -3,25 +3,11 @@ interface ProgressBarProps {
 }
 
 function ProgressBar({ progress }: ProgressBarProps) {
+  const safeProgress = Math.min(Math.max(progress, 0), 100);
+
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "8px",
-        background: "#ddd",
-        borderRadius: "10px",
-        overflow: "hidden",
-        marginTop: "10px",
-      }}
-    >
-      <div
-        style={{
-          width: `${progress}%`,
-          height: "100%",
-          background: "green",
-          transition: "width 0.2s ease",
-        }}
-      />
+    <div className="progress-track" aria-label="Upload progress">
+      <div className="progress-fill" style={{ width: `${safeProgress}%` }} />
     </div>
   );
 }
