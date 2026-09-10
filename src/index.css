@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  color: #0f172a;
-  background: #f8fbff;
-  font-family: Inter, "Segoe UI", sans-serif;
+  color: #f8f4ee;
+  background: #050505;
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -23,6 +23,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
+  background: #050505;
 }
 
 button,
